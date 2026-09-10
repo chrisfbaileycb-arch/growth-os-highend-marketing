@@ -1,0 +1,6 @@
+{
+  "name": "GrowthEngine OS",
+  "description": "Autonomous top-of-funnel intake conductor, qualification gatekeeper, and multi-agent dispatch engine for Signal P Holdings.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
