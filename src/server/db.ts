@@ -183,15 +183,15 @@ if (integrationsCount === 0) {
       costModel: '$0.90 / node-hour + storage'
     },
     {
-      id: 'github',
-      name: 'GitHub Actions Orchestrator',
-      role: 'CI/CD & Dispatch Automation',
-      domain: 'api.github.com',
+      id: 'n8n',
+      name: 'n8n Event Broker',
+      role: 'Workflow & Dispatch Automation',
+      domain: 'n8n.internal',
       status: 'HEALTHY',
-      latencyMs: 190,
+      latencyMs: 45,
       category: 'Workflow',
-      description: 'Repository dispatch hooks and automated release packaging across the 7 satellite pipelines.',
-      costModel: '$0.008 / runner min'
+      description: 'Internal event broker dispatching intake payloads to respective satellite operational pipelines.',
+      costModel: 'Self-hosted internal cluster ($0 pass-through)'
     },
     {
       id: 'cloudflare',
@@ -236,6 +236,31 @@ if (integrationsCount === 0) {
       new Date().toISOString()
     );
   }
+}
+
+// Purge any legacy github integration records from existing persistent databases
+try {
+  db.prepare("DELETE FROM integrations WHERE id = 'github'").run();
+  const n8nCheck = db.prepare("SELECT COUNT(*) as count FROM integrations WHERE id = 'n8n'").get() as any;
+  if (!n8nCheck || n8nCheck.count === 0) {
+    db.prepare(`
+      INSERT INTO integrations (id, name, role, domain, status, latency_ms, category, description, cost_model, last_checked_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      'n8n',
+      'n8n Event Broker',
+      'Workflow & Dispatch Automation',
+      'n8n.internal',
+      'HEALTHY',
+      45,
+      'Workflow',
+      'Internal event broker dispatching intake payloads to respective satellite operational pipelines.',
+      'Self-hosted internal cluster ($0 pass-through)',
+      new Date().toISOString()
+    );
+  }
+} catch {
+  // safe fallback
 }
 
 // Initial Telemetry Logs Seed

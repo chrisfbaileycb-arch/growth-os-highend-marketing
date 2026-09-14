@@ -10,14 +10,11 @@ import { IntegrationsSection } from './components/IntegrationsSection';
 import { PlaygroundSection } from './components/PlaygroundSection';
 import { LogsSection } from './components/LogsSection';
 import { Footer } from './components/Footer';
-import { GitHubModal } from './components/GitHubModal';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const [selectedPathway, setSelectedPathway] = useState<PathwayItem | null>(PATHWAY_LIST[0]);
   const [logs, setLogs] = useState<TelemetryLog[]>([]);
-  const [isGitHubConnected, setIsGitHubConnected] = useState(true);
-  const [isGitHubModalOpen, setIsGitHubModalOpen] = useState(false);
 
   // Fetch real telemetry logs from backend SQLite database
   const refreshLogs = async () => {
@@ -91,8 +88,6 @@ export default function App() {
           setActiveTab(tab);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
-        isGitHubConnected={isGitHubConnected}
-        onToggleGitHubModal={() => setIsGitHubModalOpen(true)}
       />
 
       {/* Main View Area */}
@@ -111,7 +106,6 @@ export default function App() {
         {activeTab === 'command-center' && (
           <CommandCenterSection
             onAddLog={handleAddLog}
-            isGitHubConnected={isGitHubConnected}
           />
         )}
 
@@ -174,14 +168,6 @@ export default function App() {
           setActiveTab(tab);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
-      />
-
-      {/* GitHub Sync Modal */}
-      <GitHubModal
-        isOpen={isGitHubModalOpen}
-        onClose={() => setIsGitHubModalOpen(false)}
-        isConnected={isGitHubConnected}
-        onToggleConnection={() => setIsGitHubConnected((prev) => !prev)}
       />
     </div>
   );

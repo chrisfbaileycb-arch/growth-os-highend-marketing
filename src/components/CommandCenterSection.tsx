@@ -22,12 +22,10 @@ import {
 
 interface CommandCenterSectionProps {
   onAddLog: (log: TelemetryLog) => void;
-  isGitHubConnected: boolean;
 }
 
 export const CommandCenterSection: React.FC<CommandCenterSectionProps> = ({
   onAddLog,
-  isGitHubConnected,
 }) => {
   const [intake, setIntake] = useState<ProspectIntake>({
     businessName: 'Acme Growth Co.',
@@ -179,7 +177,7 @@ export const CommandCenterSection: React.FC<CommandCenterSectionProps> = ({
         <div className="flex items-center gap-2 self-start sm:self-center">
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-md border border-[#E7E5E4] bg-white text-xs font-mono text-[#059669]">
             <CheckCircle2 className="w-3.5 h-3.5 text-[#059669]" />
-            <span>{isGitHubConnected ? 'Synced to GitHub' : 'Engine Ready'}</span>
+            <span>Engine Ready</span>
           </div>
         </div>
       </div>

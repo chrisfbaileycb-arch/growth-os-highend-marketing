@@ -1,19 +1,15 @@
 import React from 'react';
 import { TabType } from '../types';
-import { Github, CheckCircle2, Terminal } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: TabType;
   onSelectTab: (tab: TabType) => void;
-  isGitHubConnected: boolean;
-  onToggleGitHubModal: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   activeTab,
   onSelectTab,
-  isGitHubConnected,
-  onToggleGitHubModal,
 }) => {
   const tabs: { id: TabType; label: string; highlight?: boolean }[] = [
     { id: 'overview', label: 'Overview' },
@@ -74,25 +70,18 @@ export const Navbar: React.FC<NavbarProps> = ({
           })}
         </nav>
 
-        {/* Right GitHub Action */}
+        {/* Right Engine Status */}
         <div className="flex items-center gap-2">
-          <button
-            id="nav-connect-github-btn"
-            onClick={onToggleGitHubModal}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-[#E7E5E4] bg-white hover:bg-[#F5F5F2] text-[#18181B] text-xs font-medium tracking-tight transition-all shadow-2xs cursor-pointer"
+          <div
+            id="nav-engine-status-badge"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-[#E7E5E4] bg-white text-xs font-medium tracking-tight shadow-2xs"
           >
-            {isGitHubConnected ? (
-              <>
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#059669]" />
-                <span className="font-mono text-[#059669]">Synced to GitHub</span>
-              </>
-            ) : (
-              <>
-                <Github className="w-3.5 h-3.5 text-[#18181B]" />
-                <span>Connect GitHub</span>
-              </>
-            )}
-          </button>
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#059669] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#059669]"></span>
+            </span>
+            <span className="font-mono text-[#059669] font-medium">Engine Active</span>
+          </div>
         </div>
       </div>
 
